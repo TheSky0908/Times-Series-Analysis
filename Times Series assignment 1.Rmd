@@ -299,7 +299,13 @@ Not a stationary process, because $E(X_t) = t$ is dependent on time $t$.
 Stationary process.
 
 $$E(X_t) = E(W_t^2) = 1$$
-$$\gamma(h) = E(W_t^2 W_{t+h}^2) - E(W_t^2) E(W_{t+h}^2) = E(W_t^2)E(W_{t+h}^2) - 1 = 0$$
+\begin{aligned}\gamma(h) & = E(W_t^2 W_{t+h}^2) - E(W_t^2) E(W_{t+h}^2)\\
+& = E(W_t^2)E(W_{t+h}^2) - 1 \\
+& = \begin{cases} 0, & if\ h \neq 0\\
+2, & if\ h= 0
+
+\end{cases}
+\end{aligned}
 
 # (e)
 
