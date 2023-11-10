@@ -1,0 +1,580 @@
+---
+title: "Time Series Assignment 2"
+author: "12111603 Tan Zhiheng"
+date: "2023-10-20"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+# 1 
+## (a)
+When $\phi = 0$, $X_t = W_ t$ is trivial.
+
+When $|\phi|< 1$ and $\phi \neq 0$, 
+$$\begin{equation*}
+\begin{aligned}
+X_t - \phi X_{t-1} & = c \phi^t + \sum\limits_{j = 0}^{+\infty} \phi^jW_{t - j} - \phi(c \phi^{t-1} + \sum\limits_{j = 0}^{+\infty} \phi^{j}W_{t-1 - j}) \\
+                   & = \sum\limits_{j = 0}^{+\infty} \phi^jW_{t - j} - \sum\limits_{j = 0}^{+\infty} \phi^{ j + 1}W_{t - 1-j}\\
+                   Let\quad k = j + 1,\\
+                   & = \sum\limits_{j = 0}^{+\infty} \phi^jW_{t - j} - \sum\limits_{k = 1}^{+\infty} \phi^k W_{t - k}\\
+                   & = W_t
+
+\end{aligned}
+\end{equation*}$$
+
+
+which is to say, $$X_t - \phi X_{t -1} = W_t$$
+Thus, $X_t = c \phi^t + \sum\limits_{j = 0}^{+\infty}\phi^j W_{t-j}$ is a solution to the difference equation $X_t - \phi X_{t-1} = W_t$ with $|\phi| < 1$ for every real number $c$.
+
+## (b)
+
+$$\mathbb{E}(X_t) = \mathbb{E}(c \phi^t + \sum\limits_{j = 0}^{+\infty}\phi^j W_{t-j}) = \mathbb{E}(c\phi^t) = c\phi^t.$$
+The expectation depends on $t$ if $c\neq 0$, thus $X_t = c \phi^t + \sum\limits_{j = 0}^{+\infty}\phi^j W_{t-j}$ is non-stationary when $c \neq 0$. 
+
+# 2
+
+## (a)
+Because $Y_t$ is stationary, its characteristic function $\phi(z)$ has no roots with length equaling 1.
+
+Since $$\phi(B) Y_t = \theta(B)W_t,$$
+
+then we have $$\frac{\phi(B)}{(1-B)^k}(1-B)^kY_t = \theta(B)W_t.$$
+
+Thus the characteristic function of $(1-B)^k Y_t$ is $\frac{\phi(z)}{(1-z)^k}$, obviously it also has no roots with length equaling 1, hence $(1-B)^k Y_t$ is stationary for all $k \ge 1$. 
+
+## (b)
+
+From (a) we have already verified that $(1-B)^k Y_t$ is stationary for all $k \ge 1$, then to check whether $(1-B)^k X_t$ (where $X_t = \beta_0 + \beta_1 t + \cdots +\beta^q t^q + Y_t$) is stationary is necessarily equivalent to check $(1-B)^k (\beta_0 + \beta_1 t + \cdots +\beta^q t^q)$ is stationary.
+
+- When $k < q$, notice that $(1-B)^k \beta^q t^q = c\beta^qt^{q-k}$ with $c$ is a non-zero constant. Thus, the expectation $\mathbb{E}[(1-B)^kX_t]$ still depends on time $t$, so it cannot be stationary.
+
+- When $k \ge q$, notice that $(1-B)^k t^n = c_1$ for all $n \le k$ where $c_1$ is a constant, which indicates that $(1-B)^k(\beta_0 + \beta_1 t + \cdots +\beta^q t^q) = c_2$ where $c_2$ is a constant. Thus, $(1-B)^k (\beta_0 + \beta_1 t + \cdots +\beta^q t^q)$ is stationary. Therefore, $(1-B)^k X_t$ is stationary.
+ 
+ 
+To conclude, $(1-B)^k X_t$ is stationary when $k <q$ and is non-stationary when $k \ge q$.
+
+
+# 3
+## (a)
+We first prove a proposition: $$\cos(\alpha + \beta)\cos(\alpha) + \sin(\alpha + \beta)\sin(\alpha) = \cos(\beta).$$
+
+
+$$
+\begin{equation*}
+\begin{aligned}
+L.H.S. & = [\cos(\alpha)\cos(\beta)-\sin(\alpha)\sin(\beta)]\cos(\alpha) + [\sin(\alpha)\cos(\beta)+ \cos(\alpha)\sin(\beta)]\sin(\alpha)\\
+    & = \cos^2(\alpha)\cos(\beta) + \sin^2(\alpha)\cos(\beta)\\
+    & = \cos(\beta)\\
+    & = R.H.S.
+\end{aligned}
+\end{equation*}$$
+
+The proposition has been verified, then we calculate the autocovariance.
+
+$$
+\begin{equation*}
+\begin{aligned}
+&\quad\ Cov(X_{t+h}, X_t)\\
+& = Cov(U_1\cos(2\pi w_1(t+h)) + V_1\sin(2 \pi w_1(t+h))+U_2\cos(2\pi w_2(t+h)) + V_2\sin(2 \pi w_2(t+h)),\\
+&\quad\ U_1\cos(2\pi w_1t) + V_1\sin(2 \pi w_1t)+U_2\cos(2\pi w_2t) + V_2\sin(2 \pi w_2t))\\
+& = \sigma^2(\cos(2\pi w_1 (t+h))\cos(2\pi w_1 t)+\sin(2\pi w_1 (t+h))\sin(2\pi w_1 t)+\\
+&\quad\ \cos(2\pi w_2 (t+h))\cos(2\pi w_2 t)+\sin(2\pi w_2 (t+h))\sin(2\pi w_2 t))\\
+By\ the\ proposition\ proved,\\
+& = \sigma^2[\cos(2\pi w_1h) + \cos(2\pi w_2h)].
+\end{aligned}
+\end{equation*}
+$$
+
+
+Hence, autocovariance does not depend on $t$.
+
+Additionally, $\mathbb{E} X_t = 0$ also does not depend on $t$.
+
+Therefore, we can conclude that $X_t$ is weakly stationary.
+
+## (b)
+Since $X_t$ is weakly stationary and as we have already calculated the autocovariance above, thus we have $$\gamma(h) = Cov(X_{t+h}, X_t) = \sigma^2[\cos(2\pi w_1h) + \cos(2\pi w_2h)].$$
+
+Therefore, $$\rho (h) = \frac{\gamma(h)}{\gamma(0)} = \frac{\cos(2\pi w_1h) + \cos(2\pi w_2h)}{2}.$$
+
+# 4
+## (a)
+$$
+\begin{equation*}
+\begin{aligned}
+Cov(X_{t+h},X_t) & = Cov(W_{t+h}+\frac{5}{2}W_{t+h-1}-\frac{3}{2}W_{t+h-2},W_t+\frac{5}{2}W_{t -1}-\frac{3}{2}W_{t-2})\\
+& = \begin{cases}&\frac{19}{2}, & when\ h = 0\\
+                 &-\frac{5}{4}, & when\ h = 1\\
+                 &-\frac{5}{4}, & when\ h = -1\\
+                 &-\frac{3}{2}, & when\ h = 2\\
+                 &-\frac{3}{2}, & when\ h = -2\\
+                 & 0, & else.
+\end{cases}
+
+\end{aligned}
+\end{equation*}
+$$
+
+## (b)
+$$
+\begin{equation*}
+\begin{aligned}
+Cov(X_{t+h},X_t) & = Cov(\tilde{W}_{t+h}-\frac{1}{6}\tilde{W}_{t+h-1}-\frac{1}{6}\tilde{W}_{t+h-2},\tilde{W}_t-\frac{1}{6}\tilde{W}_{t -1}-\frac{1}{6}\tilde{W}_{t-2})\\
+& = \begin{cases}&\frac{19}{2}, & when\ h = 0\\
+                 &-\frac{5}{4}, & when\ h = 1\\
+                 &-\frac{5}{4}, & when\ h = -1\\
+                 &-\frac{3}{2}, & when\ h = 2\\
+                 &-\frac{3}{2}, & when\ h = -2\\
+                 & 0, & else.
+\end{cases}
+
+\end{aligned}
+\end{equation*}
+$$
+
+We can discover that the autocovariance result in (b) is the same as that in (a).
+
+## (c)
+For the first time series, $\theta(z) = 1 + \frac{5}{2}z -\frac{3}{2}z^2$, whose roots are 2 and $-\frac{1}{3}$. Since it has a root $-\frac{1}{3}$ in the unit ball of complex plane, thus it is not invertible.
+
+For the second time series, $\theta(z) = 1-\frac{1}{6}z - \frac{1}{6}z^2$, whose roots are 3 and 2. Since there does not exist any root in the unit ball of the complex plane, hence it is invertible.
+
+To conclude, MA models in (b) is invertible.
+
+
+
+# 5
+Since $Y_t$ is stationary, then for convenience we define $\gamma(h) \triangleq Cov(Y_{t+h},Y_t)$.
+
+## (a)
+$$
+\begin{equation*}
+\begin{aligned}
+Cov(X_{t+h},X_t) & = Cov(Y_{t+h}-0.4Y_{t+h-1},Y_t - 0.4 Y_{t-1})\\
+& = Cov(Y_{t+h},Y_t) - 0.4Cov(Y_{t+h-1},Y-t) - 0.4 Cov(Y_{t+h},Y_{t-1}) + 0.16 Cov(Y_{t+h-1}, Y_{t-1})\\
+& = \gamma(h ) - 0.4\gamma(h-1) -0.4 \gamma(h+1) + 0.16\gamma(h)\\
+& = 1.16 \gamma(h) - 0.4\gamma(h-1) -0.4 \gamma(h+1).
+\end{aligned}
+\end{equation*}
+$$
+
+Since $X_t = Y_t -0.4 Y_{t-1}$ is also stationary, then we define $$\gamma_{x}(h) \triangleq Cov(X_{t+h},X_t) = 1.16 \gamma(h) - 0.4\gamma(h-1) -0.4 \gamma(h+1).$$
+
+Similarly, for $Z_t = Y_t - 2.5 Y_{t-1}$, we have
+$$
+\begin{equation*}
+\begin{aligned}
+Cov(Z_{t+h},Z_t) & = Cov(Y_{t+h}-2.5Y_{t+h-1},Y_t - 2.5 Y_{t-1})\\
+& = Cov(Y_{t+h},Y_t) - 2.5Cov(Y_{t+h-1},Y-t) - 2.5 Cov(Y_{t+h},Y_{t-1}) + 6.25Cov(Y_{t+h-1}, Y_{t-1})\\
+& = \gamma(h ) - 2.5\gamma(h-1) -2.5 \gamma(h+1) + 6.25\gamma(h)\\
+& = 7.25\gamma(h) - 2.5\gamma(h-1) -2.5 \gamma(h+1).
+\end{aligned}
+\end{equation*}
+$$
+
+And since $Z_t$ is also stationary, thus we are also able to define 
+$$\gamma_{z}(h) \triangleq Cov(Z_{t+h},Z_t) = 7.25\gamma(h) - 2.5\gamma(h-1) -2.5 \gamma(h+1).$$
+
+## (b)
+The autocorrelation function of $X_t$ is 
+$$\rho_x(h) = \frac{\gamma_x(h)}{\gamma_x(0)} = \frac{1.16\gamma(h) - 0.4\gamma(h-1)- 0.4\gamma(h+1)}{1.16\gamma(0) - 0.8\gamma(1)}.$$
+Similarly, the autocorrelation function of $Z_t$ is 
+$$\rho_z(h) = \frac{\gamma_z(h)}{\gamma_z(0)} = \frac{7.25\gamma(h) - 2.5\gamma(h-1)- 2.5\gamma(h+1)}{7.25\gamma(0) - 5\gamma(1)}.$$
+Since $$\frac{1.16}{7.25} = \frac{0.4}{2.5},$$
+then we can check that $$\rho_x(h) = \rho_z(h).$$
+
+Therefore, the autocorrelation functions of $X_t$ and $Z_t$ are the same.
+
+# 6
+
+## (a)
+
+- $\phi(z) = 1 + 0.81z^2$ with roots $\frac{10}{9}i$ and $-\frac{10}{9}i$ where $i$ is the imaginary unit.
+- $\theta(z) = 1 + \frac{1}{3}z$ with root -3.
+- $p = 2$ and $q  = 1$, i.e., $ARMA(2,1).$ 
+- Since there does not exist any root of $\phi(z)$ in the unit ball of complex plane, then it is causal.
+- Since there does not exist any root of $\theta(z)$ in the unit ball of complex plane, then it is invertible.
+
+## (b)
+
+Since $$X_t - X_{t-1} = W_t - 0.5W_{t -1}- 0.5W_{t-2},$$
+which is $$(1-B)X_t = \frac{1}{2}(1-B)(2+B)W_t.$$
+Thus, $$X_t = \frac{1}{2}(2+B)W_t.$$
+
+- $\phi(z) = 1$ with no roots. 
+- $\theta(z) = 1 + \frac{1}{2}z$ with root -2.
+- $p = 0$ and $q  = 1$, i.e., $ARMA(0,1).$ 
+- Since there does not exist any root of $\phi(z)$ in the unit ball of complex plane, then it is causal.
+- Since there does not exist any root of $\theta(z)$ in the unit ball of complex plane, then it is invertible.
+
+## (c)
+
+- $\phi(z) = 1 -3z$ with root $\frac{1}{3}$
+- $\theta(z) = 1 + 2z -8z^2$ with root $\frac{1}{2}$ and $-\frac{1}{4}$.
+- $p = 1$ and $q  = 2$, i.e., $ARMA(1,2).$ 
+- Since there exists a root $\frac{1}{3}$ of $\phi(z)$ in the unit ball of complex plane, then it is NOT causal.
+- Since there exist roots $\frac{1}{2}$ and $-\frac{1}{4}$ of $\theta(z)$ in the unit ball of complex plane, then it is NOT invertible.
+
+## (d)
+
+- $\phi(z) = 1-2z +2z^2$ with roots $\frac{1+i}{2}$ and $\frac{1-i}{2}$, where $i$ is the imaginary unit.
+- $\theta(z) = 1 - \frac{8}{9}z$ with root $\frac{9}{8}$.
+- $p = 2$ and $q  = 1$, i.e., $ARMA(2,1).$ 
+- Since there exist roots $\frac{1+i}{2}$ and $\frac{1-i}{2}$ of $\phi(z)$ in the unit ball of complex plane, then it is NOT causal.
+- Since there does not exist any root of $\theta(z)$ in the unit ball of complex plane, then it is invertible.
+
+## (e)
+
+- $\phi(z) = 1-4z^2$ with roots $\frac{1}{2}$ and $-\frac{1}{2}$.
+- $\theta(z) = 1 - z + \frac{1}{2}z^2$ with roots $1+i$ and $1-i$.
+- $p = 2$ and $q  = 2$, i.e., $ARMA(2,2).$ 
+- Since there exist roots $\frac{1}{2}$ and $-\frac{1}{2}$ of $\phi(z)$ in the unit ball of complex plane, then it is NOT causal.
+- Since there does not exist any root of $\theta(z)$ in the unit ball of complex plane, then it is invertible.
+
+## (f)
+
+- $\phi(z) = 1-\frac{9}{4}z - \frac{9}{4}z^2$ with roots $\frac{1}{3}$ and $-\frac{4}{3}$.
+- $\theta(z) = 1$ with no roots.
+- $p = 2$ and $q  = 0$, i.e., $ARMA(2,0).$ 
+- Since there exists a root $\frac{1}{3}$ of $\phi(z)$ in the unit ball of complex plane, then it is NOT causal.
+- Since there does not exist any root of $\theta(z)$ in the unit ball of complex plane, then it is invertible.
+
+## (g)
+
+Since $$X_t -\frac{9}{4} X_{t-1} - \frac{9}{4} X_{t-2} = W_t - 3W_{t -1}+ \frac{1}{9}W_{t-2} - \frac{1}{3}W_{t -2},$$
+which is $$(1-3B)(1 + \frac{3}{4}B)X_t = (1 -3B)(1 + \frac{1}{9}B^2)W_t.$$
+Thus, $$(1 + \frac{3}{4}B)X_t = (1 + \frac{1}{9}B^2)W_t.$$
+
+- $\phi(z) = 1 + \frac{3}{4}z$ with root $-\frac{4}{3}$.
+- $\theta(z) = 1 + \frac{1}{9}z^2$ with root $3i$ and $-3i$ where $i$ is the imaginary unit.
+- $p = 1$ and $q  = 2$, i.e., $ARMA(1,2).$ 
+- Since there does not exist any root of $\phi(z)$ in the unit ball of complex plane, then it is causal.
+- Since there does not exist any root of $\theta(z)$ in the unit ball of complex plane, then it is invertible.
+
+# 7
+Causal models are (a), (b) and (g).
+
+Based on the formula $$\psi_j = \theta_j + \phi_1\psi_{j-1} + \cdots +\phi_p\psi_{j-p},$$
+we can start the calculation.
+
+## (a)
+Given $\phi_2 = -0.81$ and $\theta_1 = \frac{1}{3}$, we have:
+
+- $\psi_0 = 1$.
+- $\psi_1 = \theta_1 + \phi_1\psi_0= \theta_1 =  \frac{1}{3}$.
+- $\psi_2 = \theta_2 + \phi_2\psi_0 + \phi_1\psi_1 = \phi_2\psi_0 = -0.81$.
+- $\psi_3 = \theta_3 + \phi_2\psi_1 + \phi_1\psi_2 = \phi_2\psi_1 = -0.27$.
+- $\psi_4 = \theta_4 + \phi_2\psi_2 + \phi_1\psi_3 = \phi_2\psi_2 = (-0.81)^2= 0.6561$.
+
+## (b)
+
+Given $\phi_1 = 1$, $\theta_1 = -\frac{1}{2}$ and $\theta_2 = -\frac{1}{2}$, we have:
+
+- $\psi_0 = 1$.
+- $\psi_1 = \theta_1 + \phi_1\psi_0 = \frac{1}{2}$.
+- $\psi_2 = \theta_2 + \phi_1\psi_1 = 0$.
+- $\psi_3 = \theta_3 + \phi_1\psi_2 = 0$.
+- $\psi_4 = \theta_4 + \phi_1\psi_3 = 0$.
+
+
+## (g)
+Given $\phi_1 = -\frac{3}{4}$ and $\theta_2 = \frac{1}{9}$, we have:
+
+- $\psi_0 = 1$.
+- $\psi_1 = \theta_1 + \phi_1\psi_0= -\frac{3}{4}$.
+- $\psi_2 = \theta_2 + \phi_1\psi_1 = \frac{1}{9} + \frac{9}{16} = \frac{97}{144}$.
+- $\psi_3 = \theta_3 + \phi_2\psi_1 + \phi_1\psi_2 = \phi_1\psi_2 = -\frac{3}{4}\times \frac{97}{144} = -\frac{97}{192}$.
+- $\psi_4 = \phi_1\psi_3 = -\frac{3}{4}\times (-\frac{97}{192}) = \frac{97}{256}$.
+
+# 8
+
+Given the formula
+$$ \gamma(k) = \mathbb{E}(X_{t+k},X_t) = \begin{cases}
+& \sum\limits_{j = 1}^{p} \phi_j \gamma(k-j) + \sigma^2\sum\limits_{j = k}^{q}\theta_j \psi_{j - k},\quad & k \le q\\
+& \sum\limits_{j = 1}^{p} \phi_j \gamma(k-j),\quad & k < q 
+\end{cases}$$
+
+## For times series in (a)
+
+Given $\phi_2 = -0.81$, $\theta_1 = \frac{1}{3}$ and $\{\psi_i\}$ sequence, then according to the formula above, we can derive that:
+
+
+$$\begin{cases}
+\gamma(0) + 0.81 \gamma(2) = \psi_0 + \theta_1\psi_1 = \frac{10}{9}\\
+\gamma(1) + 0.81 \gamma(1) = \theta_1 \psi_0 = \frac{1}{3}\\
+\gamma(2) + 0.81 \gamma(0) = 0\\
+\gamma(n) + 0.81 \gamma(n-2) = 0,\quad n\ge 2
+\end{cases}
+$$
+
+$$\gamma( k ) = \begin{cases}
+& (-0.81)^n\gamma(0),\quad & k = 2n\\
+& (-0.81)^n\gamma(1), \quad & k = 2n + 1
+\end{cases}$$
+where $\gamma(1) = \frac{1}{3 \times 1.81}$ and $\gamma(0) = \frac{10}{9\times(1-0.81^2)}$.
+
+Therefore, the ACF is 
+
+$$\rho(k) = \frac{\gamma(k)}{\gamma(0)} = \begin{cases}
+& (-0.81)^n, \quad & k = 2n\\
+& (-0.81)^n\times \frac{\gamma(1)}{\gamma(0)} = (-0.81)^n\times 0.057, \quad & k = 2n+1
+\end{cases}$$
+
+```{r}
+
+library(forecast)
+
+# 设置随机数种子以获得可重复的结果
+set.seed(99)
+
+# 生成随机白噪声项Wt
+n <- 100  # 时间序列的长度
+white_noise <- rnorm(n)
+
+# 创建Xt项（ARMA(2,1)模型）
+Xt <- numeric(n)
+for (t in 3:n) {
+  Xt[t] <- white_noise[t] - 0.81 * Xt[t - 2] + 1/3 * white_noise[t - 1]
+}
+
+# 创建时间序列对象
+ts_data <- ts(Xt)
+
+# 可视化时间序列
+plot(ts_data, main = "ARMA(2,1) Time Series (Xt)")
+
+result <- acf(ts_data)
+
+result
+
+```
+
+We can discover that the result is consistent with our theoretical values.
+
+## For time series in (b)
+
+We have already derive that $\psi_0 = 1$, $\psi_1 = \frac{1}{2}$ and $\psi_j = 0, \forall j \neq 1,2$. Thus, $$X_t = W_t + \frac{1}{2}W_{t-1}.$$
+
+Then by definition, we can calculate that $$\rho(h) = \frac{\gamma(h)}{\gamma(0)}= \begin{cases}
+&1, \quad & h = 0\\
+&\frac{1/2}{1+ (1/2)^2} = \frac{2}{5}, \quad & h = 1\ or -1\\
+&0, \quad & else
+\end{cases}$$
+
+```{r}
+
+library(forecast)
+
+set.seed(198)
+
+# 生成随机白噪声项Wt
+n <- 100  # 时间序列的长度
+white_noise <- rnorm(n)
+
+# 创建Xt项（ARMA(2,1)模型）
+Xt <- numeric(n)
+for (t in 3:n) {
+  Xt[t] <- white_noise[t] + Xt[t-1] - 0.5*white_noise[t - 2] 
+  - 0.5 * white_noise[t - 1] 
+ 
+}
+
+ts_data <- ts(Xt)
+
+plot(ts_data,ylim = c(-5,5), main = "ARMA(2,1) Time Series (Xt)")
+
+result <- acf(ts_data)
+
+result
+
+```
+
+From the result, we can find out that it is consistent with our theoretical value.
+
+## For time series in (g)
+
+We can derive a system of equations as follows:
+$$
+\begin{equation*}
+\begin{cases}
+&\gamma(0) = -\frac{3}{4}\gamma(1) + 1 + \frac{1}{9}\times \frac{97}{144}\\
+&\gamma(1)= -\frac{3}{4}\gamma(0) + \frac{1}{9}\times (-\frac{3}{4})\\
+&\gamma(2) = -\frac{3}{4}\gamma(1) + \frac{1}{9}\\
+&\gamma(3) = -\frac{3}{4}\gamma(2)\\
+&\vdots\\
+&\gamma(n) = -\frac{3}{4}\gamma(n-1)\\
+&\vdots
+
+\end{cases}
+\end{equation*}$$
+
+Then we can figure out the result as follows:
+
+$\gamma(0) = \frac{1474}{567}$, $\gamma(1) = -\frac{1537}{756}$, $\gamma(2) = \frac{1649}{1008}$, $\gamma(3) = -\frac{3}{4}\gamma(2)$ and so on.
+
+Thus, $$\rho(h) = \begin{cases}
+&1, \quad & h = 0\\
+&-\frac{4611}{5896}, \quad & h = 1\\
+&0.6293, \quad & h = 2\\
+&0.6293\times(-\frac{3}{4})^{h-2}, \quad & h \ge 3
+
+\end{cases}$$
+
+```{r}
+
+library(forecast)
+ # (b)
+# 设置随机数种子以获得可重复的结果
+set.seed(1)
+
+# 生成随机白噪声项Wt
+n <- 100  # 时间序列的长度
+white_noise <- rnorm(n)
+
+# 创建Xt项（ARMA(2,1)模型）
+Xt <- numeric(n)
+for (t in 3:n) {
+  Xt[t] <- white_noise[t] -0.75*Xt[t-1] + 1/9*white_noise[t - 2] 
+ 
+}
+
+ts_data <- ts(Xt)
+
+
+plot(ts_data,ylim = c(-5,5), main = "ARMA(2,1) Time Series (Xt)")
+
+
+result <- acf(ts_data)
+
+result
+
+```
+
+From the figure, we can discover that the result is consistent with our theoretical value.
+
+
+# 9
+
+## (a)
+
+```{r}
+set.seed(2)
+n <- 100
+X0 <- rnorm(1,0,sqrt(4/3))
+W <- rnorm(n)
+Xt <- numeric(n)
+Xt[1] <- 1/2*X0 + W[1] 
+for (i in 2:100) {
+  Xt[i] <- 1/2*Xt[i-1] + W[i]
+  
+}
+
+ts_data <- ts(Xt)
+plot(ts_data, main = "Simulation Model of AR(1)")
+
+acf(ts_data,main = "ACF plot of simulation model")
+
+```
+
+We can discover from the time plot that the mean is zero and from the ACF plot that the acf decays exponentially, which means the parameter $\phi$ of the model $AR(1)$ is less than 1, indicating that there is no root, with its length equaling 1, of its characteristic function $\phi(z) = 1 - \phi z$. Consequently, it is simulated from a stationary process $AR(1)$.
+
+# (b)
+
+```{r}
+
+set.seed(1)
+N <- 1000
+W <- rt(N,5)
+Xt <- numeric(N)
+Xt[1] <- W[1]
+for (i in 2:N) {
+  Xt[i] <- 0.5*Xt[i-1] + W[i]
+}
+
+Zt <- Xt[901:1000]
+ts_data <- ts(Zt)
+plot(ts_data)
+
+```
+
+Since t-distribution is more heavy-tailed than normal distribution, which means the white noise tends to have more extreme values. Thus, there will be more transient states in the data. Here we simulate a long sequence of data can effectively help us capture more recurrent state and filter transient state caused by the heavy-tailed white noise.
+
+Additionally, simulating a long sequence of values can help to reduce initial bias. Since the initial values are usually generated by seed value, this can introduce bias. Thus, simulating a long sequence of values can decrease the potential initial bias.
+
+
+
+
+
+# 10
+
+## (a)
+
+```{r}
+data <- read.csv("C:/Users/Lenovo/Desktop/yahoo(1).csv")
+data <- data[-c(1,2),]
+colnames(data) <- c('time','yahoo')
+data$yahoo <- as.numeric(data$yahoo)
+
+ts <- ts(data$yahoo)
+
+library(zoo)
+smoothed_data <- rollmean(ts, k = 5, fill = NA)
+```
+
+We set the parameter $q=5$ because if it is too small, then the variance will become large whereas the bias is relatively small; on the other hand, if it is too large, then the bias will become large though the variance tends to be small.
+
+```{r}
+
+
+plot(ts, type = "b", col = "blue", xlab = "time", ylab = "Yahoo",main = "Plot of original data along with corresponding trend estimate")
+lines(smoothed_data, col = "red")
+
+
+residual <- ts - smoothed_data
+plot(residual,main = "Plot of residual")
+acf(residual[c(-1,-2,-156,-157)], main = " Correlogram of the residuals.")
+
+
+
+```
+
+From the time plot and the ACF plot of residual, we can discover that the residual tends to be a white noise, which implies the trend estimate of the original data is appropriate. 
+
+# (b)
+
+```{r}
+
+data2 <- read.csv("C:/Users/Lenovo/Desktop/chipotle(1).csv")
+colnames(data2) <- c('time','chipolte')
+ts <- ts(as.numeric(data2$chipolte[c(-1,-2)]))
+dif <- diff(ts)
+plot(dif, ylab = "Differenced data", main = "Plot of differenced data")
+```
+
+From the time plot of the differenced data, we can figure out that there is no trend in the differenced data since the data values fluctuate around zero.
+
+```{r}
+acf(dif, main = " Correlogram of differenced data")
+
+
+```
+
+According to the ACF plot of the residual, we can draw to the conclusion that the residual tends to be a white noise since most ACF stay nearby zero and thus we can consider it as a white noise. Consequently, in this practice, differencing is able to remove the trend away from the original data.
+
+
+
+
+
+
+ 
+
+
+
+
